@@ -1,0 +1,5 @@
+A program should give correct results, but along with that it should also run efficiently. 
+A program is said to be efficient when it executes in minimum time and with minimum memory space. 
+In order to write efficient programs we need to apply certain data management concepts. 
+Data structure is a crucial part of data management. 
+A data structure is basically a group of data elements that are put together under one name, and which defines a particular way of storing and organizing data in a computer so that it can be used efficiently.

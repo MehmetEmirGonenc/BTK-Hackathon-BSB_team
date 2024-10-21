@@ -1,0 +1,14 @@
+Elementary Data Structure Organization 
+A file is a collection of related records. 
+For example, if there are 60 students in a class, then there are 60 records of the students. 
+All these related records are stored in a file. 
+Similarly, we can have a file of all the employees working in an organization, a file of all the customers of a company, a file of all the suppliers, so on and so forth. 
+Moreover, each record in a file may consist of multiple data items but the value of a certain data item uniquely identifies the record in the file. Such a data item K is called a primary key, and the values K1, K2 ... in such field are called keys or key values. 
+For example, in a student’s record that contains roll number, name, address, course, and marks obtained, the field roll number is a primary key. 
+Rest of the fields (name, address, course, and marks) cannot serve as primary keys, since two or more students may have the same name, or may have the same address (as they might be staying at the same place), or may be enrolled in the same course, or have obtained same marks. 
+Data structures are generally categorized into two classes: primitive and non-primitive data structures. 
+Primitive data structures are the fundamental data types which are supported by a programming language. 
+Some basic data types are integer, real, character, and boolean. 
+The terms ‘data type’, ‘basic data type’, and ‘primitive data type’ are often used interchangeably.  
+Non-primitive data structures are those data structures which are created using primitive data structures. 
+Examples of such data structures include linked lists, stacks, trees, and graphs. 
