@@ -78,7 +78,7 @@ const HomePage = () => {
               style={{ display: 'none' }}
             />
           </div>
-          <label>
+          <label className='detail'>
             Detail (1-5):
             <input
               type="number"

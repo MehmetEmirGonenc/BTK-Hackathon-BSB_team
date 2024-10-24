@@ -2,16 +2,10 @@ $primary-color: #333;
 $secondary-color: #007bff;
 $text-color: white;
 
-.App {
+.container   {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-
-  .content {
-    flex: 1;  
-    padding: 2rem;
-    background-color: #f8f9fa; 
-  }
 
   button {
     padding: 0.5rem 1rem;
@@ -25,19 +19,6 @@ $text-color: white;
       background-color: darken($secondary-color, 10%);
     }
   }
-
-  input[type="file"], input[type="number"] {
-    padding: 0.5rem;
-    border: 1px solid lighten($primary-color, 40%);
-    margin-bottom: 1rem;
-    display: block;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-  }
 }
 
 body {
@@ -45,4 +26,5 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
   color: $primary-color;
+  overflow-x: hidden;
 }
