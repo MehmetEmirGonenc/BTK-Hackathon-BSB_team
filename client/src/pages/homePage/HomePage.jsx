@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Navbar from '../../components/navbar/Navbar.jsx'
-import Footer from '../../components/footer/Footer.jsx'
+import Navbar from '../../components/navbar/Navbar.jsx';
+import Footer from '../../components/footer/Footer.jsx';
 import './HomePage.scss';
 
 const HomePage = () => {
@@ -33,6 +33,10 @@ const HomePage = () => {
     }
   };
 
+  const handleDropzoneClick = () => {
+    document.querySelector('.file-input').click();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -53,12 +57,13 @@ const HomePage = () => {
 
   return (
     <div className="homepage">
-      <Navbar/>
+      <Navbar />
       <h1>Upload your file and select detail level</h1>
       <div className="file-upload">
         <form onSubmit={handleSubmit} onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave}>
           <div
             className={`dropzone ${dragActive ? 'active' : ''}`}
+            onClick={handleDropzoneClick} 
           >
             {file ? (
               <p>File: {file.name}</p>
@@ -70,6 +75,7 @@ const HomePage = () => {
               onChange={handleFileChange}
               accept=".txt,.docx,.pptx"
               className="file-input"
+              style={{ display: 'none' }}
             />
           </div>
           <label>
@@ -85,7 +91,7 @@ const HomePage = () => {
           <button type="submit">Upload</button>
         </form>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
