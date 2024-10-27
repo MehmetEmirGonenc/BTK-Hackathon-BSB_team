@@ -1,0 +1,30 @@
+$primary-color: #333;
+$secondary-color: #007bff;
+$text-color: white;
+
+.container   {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    background-color: $secondary-color;
+    color: $text-color;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+    }
+  }
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  color: $primary-color;
+  overflow-x: hidden;
+}
