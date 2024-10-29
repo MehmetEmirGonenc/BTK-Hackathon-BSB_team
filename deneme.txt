@@ -1,0 +1,333 @@
+Chapter 2Introduction to C Programming
+C How to Program, 8/e, GE
+© 2016 Pearson Education, Ltd. All rights reserved.
+1
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+// Fig. 2.1: fig02_01.c// A first program in C
+begin with //, indicating that these two lines are comments.
+Comments document programs and improve program readability.
+Comments do not cause the computer to perform any action when the program is run.
+© 2016 Pearson Education, Ltd. All rights reserved.
+2
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+Comments are ignored by the C compiler and do not cause any machine-language object code to be generated.
+Comments also help other people read and understand your program.
+© 2016 Pearson Education, Ltd. All rights reserved.
+3
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+You can also use /*…*/ multi-line comments in which everything from /* on the first line to */ at the end of the line is a comment.
+We prefer // comments because they’re shorter and they eliminate the common programming errors that occur with /*…*/ comments, especially when the closing */ is omitted.
+#include Preprocessor Directive
+#include <stdio.h>
+is a directive to the C preprocessor.
+© 2016 Pearson Education, Ltd. All rights reserved.
+4
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+Lines beginning with # are processed by the preprocessor before compilation.
+Line 3 tells the preprocessor to include the contents of the standard input/output header (<stdio.h>) in the program.
+This header contains information used by the compiler when compiling calls to standard input/output library functions such as printf.
+Blank Lines and White Space
+You use blank lines, space characters and tab characters (i.e., “tabs”) to make programs easier to read. 
+Together, these characters are known as white space. White-space characters are normally ignored by the compiler. 
+© 2016 Pearson Education, Ltd. All rights reserved.
+5
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+The main Function
+int main( void )
+is a part of every C program.
+The parentheses after main indicate that main is a program building block called a function.
+6
+C programs contain one or more functions, one of which must be main.
+Every program in C begins executing at the function main.
+The keyword int to the left of main indicates that main “returns” an integer value.
+
+
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+For now, simply include the keyword int to the left of main in each of your programs.
+Functions also can receive information when they’re called upon to execute.
+The void in parentheses here means that main does not receive any information.
+© 2016 Pearson Education, Ltd. All rights reserved.
+7
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+A left brace, {, begins the body of every function 
+A corresponding right brace ends each function
+This pair of braces and the portion of the program between the braces is called a block.
+An Output Statement
+printf( "Welcome to C!\n" );
+instructs the computer to perform an action, namely to print on the screen the string of characters marked by the quotation marks.
+A string is sometimes called a character string, a message or a literal.
+© 2016 Pearson Education, Ltd. All rights reserved.
+8
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+The entire line, including the printf function, its argument within the parentheses and the semicolon (;), is called a statement.
+Every statement must end with a semicolon 
+When the preceding printf statement is executed, it prints the message Welcome to C! on the screen.
+
+Escape Sequences
+Notice that the characters \n were not printed on the screen.
+The backslash (\) is called an escape character.
+It indicates that printf is supposed to do something out of the ordinary.
+© 2016 Pearson Education, Ltd. All rights reserved.
+9
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+When encountering a backslash in a string, the compiler looks ahead at the next character and combines it with the backslash to form an escape sequence.
+The escape sequence \n means newline.
+When a newline appears in the string output by a printf, the newline causes the cursor to position to the beginning of the next line on the screen.
+© 2016 Pearson Education, Ltd. All rights reserved.
+10
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+Because the compiler recognizes backslash as an escape character, we use a double backslash (\\) to place a single backslash in a string.
+Printing a double quote also presents a problem because double quotes mark the boundaries of a string—such quotes are not printed.
+By using the escape sequence \" in a string to be output by printf, we indicate that printf should display a double quote.
+The right brace, }, indicates that the end of main has been reached.
+
+© 2016 Pearson Education, Ltd. All rights reserved.
+11
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+The Linker and Executables
+Standard library functions like printf and scanf are not part of the C programming language.
+For example, the compiler cannot find a spelling error in printf or scanf.
+When the compiler compiles a printf statement, it merely provides space in the object program for a “call” to the library function.
+But the compiler does not know where the library functions are—the linker does.
+When the linker runs, it locates the library functions and inserts the proper calls to these library functions in the object program.
+© 2016 Pearson Education, Ltd. All rights reserved.
+12
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+Now the object program is complete and ready to be executed.
+For this reason, the linked program is called an executable.
+If the function name is misspelled, it’s the linker that will spot the error, because it will not be able to match the name in the C program with the name of any known function in the libraries.
+© 2016 Pearson Education, Ltd. All rights reserved.
+13
+2.2  A Simple C Program: Printing a Line of Text (Cont.)
+Using Multiple printfs
+The printf function can print Welcome to C! several different ways.
+For example, the program of Fig. 2.3 produces the same output as the program of Fig. 2.1.
+This works because each printf resumes printing where the previous printf stopped printing.
+© 2016 Pearson Education, Ltd. All rights reserved.
+14
+2.3  Another Simple C Program: Adding Two Integers (Cont.)
+Variables and Variable Definitions
+int integer1; // first number to be entered by userint integer2; // second number to be entered by user int sum; // variable in which sum will be stored 
+are definitions.
+The names integer1, integer2 and sum are the names of variables—locations in memory where values can be stored for use by a program.
+These definitions specify that the variables integer1, integer2 and sum are of type int, which means that they’ll hold integer values.
+All variables must be defined with a name and a data type before they can be used in a program.
+The preceding definitions could have been combined into a single definition statement as follows:
+int integer1, integer2, sum;
+but that would have made it difficult to describe the variables with corresponding comments
+
+15
+2.3  Another Simple C Program: Adding Two Integers (Cont.)
+Identifiers and Case Sensitivity
+A variable name in C is any valid identifier.
+An identifier is a series of characters consisting of letters, digits and underscores (_) that does not begin with a digit.
+C is case sensitive—uppercase and lowercase letters are different in C, so a1 and A1 are different identifiers.
+
+© 2016 Pearson Education, Ltd. All rights reserved.
+16
+2.3  Another Simple C Program: Adding Two Integers (Cont.)
+Prompting Messages
+printf( "Enter first integer\n" ); // prompt
+displays the literal “Enter first integer” and positions the cursor to the beginning of the next line.
+This message is called a prompt because it tells the user to take a specific action.
+
+© 2016 Pearson Education, Ltd. All rights reserved.
+17
+The scanf Function and Formatted Inputs
+The next statement 
+scanf( "%d", &integer1 ); // read an integer
+uses scanf to obtain a value from the user.
+The scanf function reads from the standard input, which is usually the keyboard.
+2.3  Another Simple C Program: Adding Two Integers (Cont.)
+This scanf has two arguments, "%d" and &integer1.
+The first, the format control string, indicates the type of data that should be input by the user.
+The %d conversion specifier indicates that the data should be an integer (the letter d stands for “decimal integer”).
+The % in this context is treated by scanf (and printf as we’ll see) as a special character that begins a conversion specifier.
+The second argument of scanf begins with an ampersand (&)—called the address operator in C—followed by the variable name.
+© 2016 Pearson Education, Ltd. All rights reserved.
+18
+2.3  Another Simple C Program: Adding Two Integers (Cont.)
+The &, when combined with the variable name, tells scanf the location (or address) in memory at which the variable integer1 is stored.
+The computer then stores the value that the user enters for integer1 at that location.
+The use of ampersand (&) is often confusing 
+For now, just remember to precede each variable in every call to scanf with an ampersand.
+© 2016 Pearson Education, Ltd. All rights reserved.
+19
+2.3  Another Simple C Program: Adding Two Integers (Cont.)
+When the computer executes the preceding scanf, it waits for the user to enter a value for variable integer1.
+The user responds by typing an integer, then pressing the Enter key to send the number to the computer.
+The computer then assigns this number, or value, to the variable integer1.
+Any subsequent references to integer1 in this program will use this same value.
+Functions printf and scanf facilitate interaction between the user and the computer.
+Because this interaction resembles a dialogue, it’s often called interactive computing.
+© 2016 Pearson Education, Ltd. All rights reserved.
+20
+printf( "Enter second integer\n" ); // prompt
+displays the message Enter second integer on the screen, then positions the cursor to the beginning of the next line.
+scanf( "%d", &integer2 ); // read an integer
+obtains a value for variable integer2 from the user.
+21
+Assignment Statement
+The assignment statement 
+sum = integer1 + integer2; // assign total to sum 
+calculates the total of variables integer1 and integer2 and assigns the result to variable sum using the assignment operator =
+The = operator and the + operator are called binary operators because each has two operands.
+The + operator’s two operands are integer1 and integer2.
+The = operator’s two operands are sum and the value of the expression integer1 + integer2.
+2.3  Another Simple C Program: Adding Two Integers (Cont.)
+Printing with a Format Control String
+printf( "Sum is %d\n", sum ); // print sum
+This printf has two arguments, "Sum is %d\n" and sum.
+The first argument is the format control string.
+It contains some literal characters to be displayed, and it contains the conversion specifier %d indicating that an integer will be printed.
+The second argument specifies the value to be printed.
+© 2016 Pearson Education, Ltd. All rights reserved.
+22
+Calculations in printf Statements
+We could have combined the previous two statements into the statement
+printf( "Sum is %d\n", integer1 + integer2 );
+The right brace, }, at line 21 indicates that the end of function main has been reached.
+
+2.4  Memory Concepts
+Variable names such as integer1, integer2 and sum actually correspond to locations in the computer’s memory.
+Every variable has a name, a type and a value. 
+
+When the statement
+scanf( "%d", &integer1 ); // read an integer 
+is executed, the value entered by the user is placed into a memory location to which the name integer1 has been assigned.
+
+Suppose the user enters the 45 as the value for integer1.
+The computer will place 45 into location integer1 as shown in Fig. 2.6.
+© 2016 Pearson Education, Ltd. All rights reserved.
+23
+2.4  Memory Concepts (Cont.) 
+Whenever a value is placed in a memory location, the value replaces the previous value in that location; thus, this process is said to be destructive.
+When the statement
+scanf( "%d", &integer2 ); // read an integer
+executes, suppose the user enters the value 72.
+This value is placed into location integer2, and memory appears as in Fig. 2.7.
+These locations are not necessarily adjacent in memory. 
+© 2016 Pearson Education, Ltd. All rights reserved.
+24
+2.4  Memory Concepts (Cont.) 
+Once the program has obtained values for integer1 and integer2, it adds these values and places the total into variable sum.
+sum = integer1 + integer2; // assign total to sum 
+replaces whatever value was stored in sum. 
+25
+After sum is calculated, memory appears as in Fig. 2.8.
+The values of integer1 and integer2 appear exactly as they did before they were used in the calculation.
+2.4  Memory Concepts (Cont.) 
+They were used, but not destroyed, as the computer performed the calculation.
+Thus, when a value is read from a memory location, the process is said to be nondestructive. 
+Most C programs perform calculations using the C arithmetic operators
+© 2016 Pearson Education, Ltd. All rights reserved.
+26
+2.5  Arithmetic in C
+The asterisk (*) indicates multiplication and the percent sign (%) denotes the remainder operator
+C requires that multiplication be explicitly denoted by using the * operator as in a * b.
+The arithmetic operators are all binary operators.
+For example, the expression 3 + 7 contains the binary operator + and the operands 3 and 7.
+© 2016 Pearson Education, Ltd. All rights reserved.
+27
+Integer Division and the Remainder Operator
+Integer division yields an integer result
+For example, the expression 7 / 4 evaluates to 1
+C provides the remainder operator, %, which yields the remainder after integer division (used only with integer operands)
+The expression x % y yields the remainder after x is divided by y
+Thus, 7 % 4 yields 3 and 17 % 5 yields 2
+2.5  Arithmetic in C (Cont.)
+Arithmetic Expressions in Straight-Line Form
+Arithmetic expressions in C must be written in straight-line form to facilitate entering programs into the computer.
+Thus, expressions such as “a divided by b” must be written as a/b so that all operators and operands appear in a straight line.
+The algebraic notation 
+a
+______
+b
+is generally not acceptable to compilers.
+28
+Parentheses for Grouping Subexpressions
+Parentheses are used in C expressions in the same manner as in algebraic expressions.
+For example, to multiply a times the quantity b + c we write a * ( b + c ).
+2.5  Arithmetic in C (Cont.)
+Rules of Operator Precedence
+C applies the operators in arithmetic expressions in a precise sequence determined by the following rules of operator precedence, which are generally the same as those in algebra:
+Operators in expressions contained within pairs of parentheses are evaluated first. Parentheses are said to be at the “highest level of precedence.” 
+In cases of nested, or embedded, parentheses, such as
+( ( a + b ) + c )
+the operators in the innermost pair of parentheses are applied first. 
+29
+As in algebra, it’s acceptable to place unnecessary parentheses in an expression to make the expression clearer. These are called redundant parentheses.
+2.5  Arithmetic in C (Cont.)
+Multiplication, division and remainder operations are applied next. 
+If an expression contains several multiplication, division and remainder operations, evaluation proceeds from left to right.
+Multiplication, division and remainder are said to be on the same level of precedence.
+Addition and subtraction operations are evaluated next. 
+If an expression contains several addition and subtraction operations, evaluation proceeds from left to right. 
+Addition and subtraction also have the same level of precedence, which is lower than the precedence of the multiplication, division and remainder operations.
+The assignment operator (=) is evaluated last.
+© 2016 Pearson Education, Ltd. All rights reserved.
+30
+2.5  Arithmetic in C (Cont.)
+The rules of operator precedence specify the order C uses to evaluate expressions. When we say evaluation proceeds from left to right, we’re referring to the associativity of the operators.
+We’ll see that some operators associate from right to left.
+Figure 2.10 summarizes these rules of operator precedence for the operators we’ve seen so far.
+31
+2.6  Decision Making: Equality and Relational Operators
+Executable C statements either perform actions (such as calculations or input or output of data) or make decisions.
+We might make a decision in a program, for example, to determine whether a person’s grade on an exam is greater than or equal to 60 and whether the program should print the message “Congratulations! You passed.” 
+This section introduces a simple version of C’s if statement that allows a program to make a decision based on the truth or falsity of a statement of fact called a condition.
+© 2016 Pearson Education, Ltd. All rights reserved.
+32
+2.6  Decision Making: Equality and Relational Operators
+If the condition is true the statement in the body of the if statement is executed.
+If the condition is false the body statement is not executed.
+Whether the body statement is executed or not, after the if statement completes, execution proceeds with the next statement after the if statement. 
+Conditions in if statements are formed by using the equality operators and relational operators summarized
+33
+2.6  Decision Making: Equality and Relational Operators
+The relational operators all have the same level of precedence and they associate left to right.
+The equality operators have a lower level of precedence than the relational operators and they also associate left to right.
+In C, a condition may actually be any expression that generates a zero (false) or nonzero (true) value.
+34
+2.6  Decision Making: Equality and Relational Operators
+Comparing Numbers
+The if statement
+ if ( num1 == num2 ) {
+      printf( "%d is equal to %d\n", num1, num2 );
+   }
+compares the values of variables num1 and num2 to test for equality. 
+If the conditions are true in one or more of the if statements, the corresponding body statement displays an appropriate line of text. 
+35
+A left brace, {, begins the body of each if statement 
+A corresponding right brace, }, ends each if statement’s body 
+Any number of statements can be placed in the body of an if statement.
+2.6  Decision Making: Equality and Relational Operators
+Figure 2.14 lists from highest to lowest the precedence of the operators introduced in this chapter.
+Operators are shown top to bottom in decreasing order of precedence.
+All these operators, with the exception of the assignment operator =, associate from left to right.
+The assignment operator (=) associates from right to left.
+36
+2.6  Decision Making: Equality and Relational Operators
+Some of the words we’ve used in the C programs in this chapter—in particular int and if—are keywords or reserved words of the language.
+Figure 2.15 contains the C keywords.
+These words have special meaning to the C compiler, so you must be careful not to use these as identifiers such as variable names.
+
+37
+2.7  Secure C Programming
+CERT C Secure Coding Standard (Guidelines to avoid attacks)
+Avoid Single-Argument printfs
+If you need to display a string that terminates with a newline, use the puts function, which displays its string argument followed by a newline character
+For example
+printf( "Welcome to C!\n" );
+should be written as:
+puts( "Welcome to C!" );
+We did not include \n in the preceding string because puts adds it automatically. 
+38
+If you need to display a string without a terminating newline character, use printf with two arguments.
+For example
+printf( "Welcome " );
+should be written as:
+printf( "%s", "Welcome " );
+
+These changes are responsible coding practices that eliminate certain security C vulnerabilities as we get deeper into C
+

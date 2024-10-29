@@ -1,0 +1,145 @@
+## C Programming Exam: Chapter 2 Introduction to C
+
+**Instructions:** Answer all questions to the best of your ability.  Please show your work where applicable.
+
+**Multiple Choice (2 points each)**
+
+1. Which of the following is a valid C identifier?
+    a) 1st_variable
+    b) _variable
+    c) variable$
+    d) variable-1
+
+2. What is the purpose of a comment in a C program?
+    a) To provide instructions to the compiler
+    b) To improve the readability and understanding of the code
+    c) To execute specific actions during runtime
+    d) To declare variables
+
+3. Which preprocessor directive is used to include the standard input/output library in a C program?
+    a) #include <stdio.h>
+    b) #import <stdio.h>
+    c) #define <stdio.h>
+    d) #using <stdio.h>
+
+4. What is the purpose of the `main()` function in a C program?
+    a) It defines the main data structures of the program
+    b) It handles all input and output operations
+    c) It is the starting point of program execution
+    d) It performs all calculations within the program
+
+5. Which operator is used for integer division in C?
+    a) /
+    b) %
+    c) *
+    d) +
+
+6. What does the `%d` conversion specifier indicate in a `printf` statement?
+    a) A decimal integer
+    b) A floating-point number
+    c) A character
+    d) A string
+
+7. Which operator is used to assign a value to a variable in C?
+    a) =
+    b) ==
+    c) +
+    d) -
+
+8. Which of the following is a relational operator in C?
+    a) =
+    b) ==
+    c) !=
+    d) &
+
+9. What does the `\n` escape sequence represent in a string?
+    a) A tab character
+    b) A newline character
+    c) A backslash character
+    d) A double quote character
+
+10. What is the purpose of the `scanf()` function in C?
+    a) To display output on the console
+    b) To read input from the user
+    c) To perform mathematical calculations
+    d) To define variables
+
+**True/False (2 points each)**
+
+1.  C is case-sensitive, meaning that `variable` and `Variable` are considered the same identifier. (True/False)
+2.  White space characters (spaces, tabs, newlines) are ignored by the C compiler. (True/False)
+3.  The `printf()` function requires an ampersand (&) before each variable in its format control string. (True/False)
+4.  The `if` statement in C allows the program to make decisions based on the truth or falsity of a condition. (True/False)
+5.  The remainder operator (%) can be used with both integer and floating-point operands. (True/False)
+
+**Short Answer (5 points each)**
+
+1.  Explain the difference between a variable definition and a variable declaration in C.
+2.  What are the rules of operator precedence in C? Provide an example to illustrate your explanation.
+3.  Write a C program that prompts the user to enter two numbers, then calculates and displays their product.
+
+**Answer Key**
+
+**Multiple Choice:**
+
+1. b) _variable
+2. b) To improve the readability and understanding of the code
+3. a) #include <stdio.h>
+4. c) It is the starting point of program execution
+5. a) /
+6. a) A decimal integer
+7. a) =
+8. c) !=
+9. b) A newline character
+10. b) To read input from the user
+
+**True/False:**
+
+1. False
+2. True
+3. False
+4. True
+5. False
+
+**Short Answer:**
+
+1. **Variable Definition:** A variable definition allocates memory for a variable and specifies its data type.  It also optionally assigns an initial value. For example, `int num = 10;` defines an integer variable `num` and assigns the value 10 to it.
+
+   **Variable Declaration:**  A variable declaration informs the compiler about the name and data type of a variable without allocating memory. It can be used to declare a variable that is defined elsewhere. For example, `extern int num;` declares an integer variable `num` that is defined in another file.
+
+2. **Rules of Operator Precedence:**
+
+   * Parentheses have the highest precedence. Operations inside parentheses are evaluated first.
+   * Multiplication, division, and the remainder operator (%) have the same precedence, and are evaluated from left to right.
+   * Addition and subtraction have the same precedence, lower than multiplication, division, and remainder, and are evaluated from left to right.
+   * The assignment operator (=) has the lowest precedence and is evaluated from right to left.
+
+   **Example:** 
+   In the expression `a * (b + c) / d - e`, the operations are performed in the following order:
+
+   1. `b + c` (inside parentheses)
+   2. `a * (b + c)` (multiplication)
+   3. `(a * (b + c)) / d` (division)
+   4. `((a * (b + c)) / d) - e` (subtraction)
+
+3. **C program to calculate the product of two numbers:**
+
+   ```c
+   #include <stdio.h>
+
+   int main() {
+       int num1, num2, product;
+
+       printf("Enter first number: ");
+       scanf("%d", &num1);
+
+       printf("Enter second number: ");
+       scanf("%d", &num2);
+
+       product = num1 * num2; 
+
+       printf("The product of %d and %d is %d\n", num1, num2, product);
+
+       return 0;
+   }
+   ``` 
