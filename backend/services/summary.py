@@ -1,47 +1,46 @@
 import argparse
-import PyPDF2
-
+import json
 import google.generativeai as genai
-genai.configure(api_key="AIzaSyDqC5cme1DLiVksst_l5KDWOJ8o842Gj_I")
 
 parser = argparse.ArgumentParser(description="PDF dosyasını özetle")
 
-parser.add_argument("file_path", type=str)
+parser.add_argument("json_file", type=str)
 parser.add_argument("context", type=str, nargs='?', default="")
 args = parser.parse_args()
 
-
-file = args.pdf_file
-input_prompt = args.context
-
+sourceFile = args.json_file #json
+input_prompt = args.context #string
 
 if (len(input_prompt)<1):
     input_prompt = "All File"
 
-def extract_text_from_pdf(pdf_path):
-    """
-    convert pdf to text 
-    """
-    with open(pdf_path, 'rb') as pdf_file:
-        pdf_reader = PyPDF2.PdfReader(pdf_file)
-        extracted_text = ""
-        for page in pdf_reader.pages:
-            text = page.extract_text()
-            if text:
-                extracted_text += text
-        return extracted_text
+with open(sourceFile, 'r', encoding='utf-8') as file:
+    inputVeri = json.load(file)
 
-sample_file = extract_text_from_pdf(file)
+textDocument = inputVeri["text"]
 
+genai.configure(api_key="AIzaSyDqC5cme1DLiVksst_l5KDWOJ8o842Gj_I")#enve bağla
 model = genai.GenerativeModel(model_name="gemini-1.5-flash")
-
-
-
 
 final_prompt =f"Create a lecture note summary on {input_prompt}. Use the given document as a source."
 
+response = model.generate_content([textDocument ,final_prompt])
 
-response = model.generate_content([sample_file ,final_prompt])
-#Summarize the text in about 400 words in the given context : Algorithms : file 
+outputVeri = {
+    "source":sourceFile,
+    "context":input_prompt,
+    "text": response .text,
+}
 
-print(response.text)
+out_path = sourceFile.split(".")
+out_path[-2] = out_path[-2]+"-sum"
+out_path[-1] = "json"
+out_path = ".".join(out_path)
+
+with open(out_path, 'w') as f:
+    f.write(response.text)
+
+with open(out_path, 'w') as f:
+    json.dump(outputVeri, f, ensure_ascii=False, indent=4)
+
+print(out_path)

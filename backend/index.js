@@ -8,9 +8,10 @@ const { stdout, stderr } = require("process");
 const app = express();
 const PORT = 5000;
 
-app.post("/upload", upload.single("file"), (req,res,next) => {
-    
+//#region routes
 
+app.post("/summary", upload.single("file"), (req,res,next) => {
+    
     const context = req.body.context;
     
     const pythonScriptPath = path.join(__dirname, './services/summary.py');
@@ -18,6 +19,7 @@ app.post("/upload", upload.single("file"), (req,res,next) => {
     console.log(req.file.path);
 
     exec(`python3 ${pythonScriptPath} ${req.file.path} "${context}"`,(error,stdout,stderr)=>{
+        
         if(error){
             console.error(`Error: ${error.message}`);
             return res.status(500).json({ error: 'Failed to process file' });
@@ -30,6 +32,12 @@ app.post("/upload", upload.single("file"), (req,res,next) => {
         res.json({ text: stdout });
     })
 })
+
+//#endregion
+
+app.use("*", (req, res, next) => {
+    res.status(404).json("Bulunamadı");
+});
 
 app.listen(PORT, () => {
 console.log(`Server running on port ${PORT}`);
