@@ -15,7 +15,6 @@ const createFolderIfNotExists = (folderPath) => {
 
 createFolderIfNotExists(uploadDir)
 
-
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
 //     cb(null, uploadDir);
@@ -28,7 +27,7 @@ createFolderIfNotExists(uploadDir)
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Dosyaların kaydedileceği dizin
+    cb(null,uploadDir); // Dosyaların kaydedileceği dizin
   },
   filename: (req, file, cb) => {
     if (!req.session || !req.session.id) {

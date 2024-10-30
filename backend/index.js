@@ -22,6 +22,32 @@ app.use(session({
     }
   }));
 
+  app.post("/summary", upload.single("file"), (req,res,next) => {
+    
+    res.json({ message: 'File uploaded successfully', fileName: req.session.uploadedFile });
+    const context = req.body.context;
+    
+    const pythonScriptPath = path.join(__dirname, './services/summary.py');
+    console.log(context);
+    console.log(req.file.path);
+
+    exec(`python3 ${pythonScriptPath} ${req.file.path} "${context}"`,(error,stdout,stderr)=>{
+        
+        if(error){
+            console.error(`Error: ${error.message}`);
+            return res.status(500).json({ error: 'Failed to process file' });
+        }
+        if (stderr) {
+            console.error(`stderr: ${stderr}`);
+            return res.status(500).json({ error: 'Processing error' });
+        }
+
+        console.log(stdout)
+
+        res.json({ text: stdout });
+    })
+})
+
   app.use((req, res, next) => {
     // Eğer oturum yoksa, işlemi tamamlayın
     if (!req.session) return next();
@@ -47,6 +73,7 @@ app.use(session({
 
 app.post("/summary", upload.single("file"), (req,res,next) => {
     
+    res.json({ message: 'File uploaded successfully', fileName: req.session.uploadedFile });
     const context = req.body.context;
     
     const pythonScriptPath = path.join(__dirname, './services/summary.py');
@@ -63,6 +90,8 @@ app.post("/summary", upload.single("file"), (req,res,next) => {
             console.error(`stderr: ${stderr}`);
             return res.status(500).json({ error: 'Processing error' });
         }
+
+        console.log(stdout)
 
         res.json({ text: stdout });
     })
