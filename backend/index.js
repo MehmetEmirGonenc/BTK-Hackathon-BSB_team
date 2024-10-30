@@ -22,35 +22,38 @@ app.use(session({
     }
   }));
 
-app.use((req, res, next) => {
+  app.use((req, res, next) => {
+    // Eğer oturum yoksa, işlemi tamamlayın
     if (!req.session) return next();
   
     // Oturum sona erdiğinde veya silindiğinde dosyayı sil
     req.session.destroy(err => {
       if (err) return next(err);
+  
+      // Burada req.session'in null olmadığını varsayıyoruz
       if (req.session.uploadedFile) {
         const filePath = path.join(__dirname, 'temp', req.session.uploadedFile);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath); // Dosyayı sil
         }
       }
+  
+      next(); // İşlemi devam ettirin
     });
-    next();
   });
+  
 
 //#region routes
 
-app.post("/summary", upload.single("file"), async(req,res,next) => {
+app.post("/summary", upload.single("file"), (req,res,next) => {
     
-
-    var path ;
     const context = req.body.context;
     
+    const pythonScriptPath = path.join(__dirname, './services/summary.py');
     console.log(context);
     console.log(req.file.path);
 
-    var pythonScriptPath = path.join(__dirname, './services/extract-text.py');
-    await exec(`python3 ${pythonScriptPath} ${req.file.path}`,(error,stdout,stderr)=>{//document to txt
+    exec(`python3 ${pythonScriptPath} ${req.file.path} "${context}"`,(error,stdout,stderr)=>{
         
         if(error){
             console.error(`Error: ${error.message}`);
@@ -60,30 +63,12 @@ app.post("/summary", upload.single("file"), async(req,res,next) => {
             console.error(`stderr: ${stderr}`);
             return res.status(500).json({ error: 'Processing error' });
         }
-        
-        console.log({ text: stdout });
+
+        res.json({ text: stdout });
     })
-
-    var pythonScriptPath = path.join(__dirname, './services/extract-text.py');
-    await exec(`python3 ${pythonScriptPath} ${req.file.path}`,(error,stdout,stderr)=>{//txt to summary
-        
-        if(error){
-            console.error(`Error: ${error.message}`);
-            return res.status(500).json({ error: 'Failed to process file' });
-        }
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            return res.status(500).json({ error: 'Processing error' });
-        }
-        console.log({ text: stdout });
-    })
-
-
-
-
-    //res.json({ text: stdout });
 })
 
+//#endregion
 
 app.use("*", (req, res, next) => {
     res.status(404).json("Bulunamadı");

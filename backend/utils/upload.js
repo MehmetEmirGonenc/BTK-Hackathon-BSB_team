@@ -28,16 +28,16 @@ createFolderIfNotExists(uploadDir)
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
-    }
-    cb(null, uploadDir);
+    cb(null, 'uploads/'); // Dosyaların kaydedileceği dizin
   },
   filename: (req, file, cb) => {
+    if (!req.session || !req.session.id) {
+      return cb(new Error('Session ID not found'));
+    }
     const fileName = `${req.session.id}-${file.originalname}`;
-    req.session.uploadedFile = fileName; // Oturumda dosya adını sakla
+    req.session.uploadedFile = fileName;
     cb(null, fileName);
-  },
+  }
 });
 
 const upload = multer({storage:storage});
