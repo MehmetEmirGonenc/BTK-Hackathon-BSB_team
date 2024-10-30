@@ -5,15 +5,16 @@ import './HomePage.scss';
 
 const HomePage = () => {
   const [file, setFile] = useState(null);
-  const [detail, setDetail] = useState(1);
+  const [summaryText, setSummaryText] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
   const [dragActive, setDragActive] = useState(false);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  const handleDetailChange = (e) => {
-    setDetail(e.target.value);
+  const handleSummaryTextChange = (e) => {
+    setSummaryText(e.target.value);
   };
 
   const handleDragOver = (e) => {
@@ -41,7 +42,25 @@ const HomePage = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('detail', detail);
+
+    if (selectedOption === 'summary') {
+
+      formData.append('summaryText', summaryText);
+      
+      try {
+        const response = await fetch('http://localhost:5000/summary', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+
+    } else if (selectedOption === 'test') {
+      formData.append('test', 'Test selected');
+    }
 
     try {
       const response = await fetch('http://localhost:5000/upload', {
@@ -58,12 +77,12 @@ const HomePage = () => {
   return (
     <div className="homepage">
       <Navbar />
-      <h1>Upload your file and select detail level</h1>
+      <h1>Upload your file and select an option</h1>
       <div className="file-upload">
         <form onSubmit={handleSubmit} onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave}>
           <div
             className={`dropzone ${dragActive ? 'active' : ''}`}
-            onClick={handleDropzoneClick} 
+            onClick={handleDropzoneClick}
           >
             {file ? (
               <p>File: {file.name}</p>
@@ -78,16 +97,27 @@ const HomePage = () => {
               style={{ display: 'none' }}
             />
           </div>
-          <label className='detail'>
-            Detail (1-5):
-            <input
-              type="number"
-              value={detail}
-              onChange={handleDetailChange}
-              min="1"
-              max="5"
-            />
-          </label>
+
+          <div className="options">
+            <button type="button" onClick={() => setSelectedOption('summary')}>
+              Summary
+            </button>
+            <button type="button" onClick={() => setSelectedOption('test')}>
+              Test
+            </button>
+          </div>
+
+          {selectedOption === 'summary' && (
+            <label className='summary-text'>
+              Summary Text:
+              <input
+                type="text"
+                value={summaryText}
+                onChange={handleSummaryTextChange}
+              />
+            </label>
+          )}
+
           <button type="submit">Upload</button>
         </form>
       </div>
