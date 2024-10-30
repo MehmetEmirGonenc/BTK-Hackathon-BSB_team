@@ -1,8 +1,9 @@
 import argparse
 import PyPDF2
 import json
+from pptx import Presentation
 
-def extract_text_from_pdf(pdf_path):
+def extract_text_from_pdf(pdf_path):   #pdf dosyasındaki texti cekip bir stringe koyar
     """
     convert pdf to text 
     """
@@ -14,6 +15,18 @@ def extract_text_from_pdf(pdf_path):
             if text:
                 extracted_text += text
         return extracted_text
+
+def extract_text_from_pptx(pptx_path):   #pptx dosyasındaki texti cekip bir stringe koyar
+    prs = Presentation(pptx_path)
+    text_list = ""
+
+    for slide_number, slide in enumerate(prs.slides):
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                text_list += shape.text + "\n"
+    return text_list
+
+
 
 parser = argparse.ArgumentParser(description="extract  text from given sourceFile")
 parser.add_argument("file_path", type=str)
@@ -29,8 +42,10 @@ out_path = ".".join(out_path)
 
 text_output = ""
 
-if file_type == "pdf":
+if file_type == "pdf":     #input dosya türüne göre fonksiyon çalıştırılır.
     text_output = extract_text_from_pdf(sourceFile)
+if file_type == "pptx":
+    text_output = extract_text_from_pptx(sourceFile)
 
 veri = {
     "source":sourceFile,
