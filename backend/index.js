@@ -22,21 +22,26 @@ app.use(session({
     }
   }));
 
-app.use((req, res, next) => {
+  app.use((req, res, next) => {
+    // Eğer oturum yoksa, işlemi tamamlayın
     if (!req.session) return next();
   
     // Oturum sona erdiğinde veya silindiğinde dosyayı sil
     req.session.destroy(err => {
       if (err) return next(err);
+  
+      // Burada req.session'in null olmadığını varsayıyoruz
       if (req.session.uploadedFile) {
         const filePath = path.join(__dirname, 'temp', req.session.uploadedFile);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath); // Dosyayı sil
         }
       }
+  
+      next(); // İşlemi devam ettirin
     });
-    next();
   });
+  
 
 //#region routes
 
