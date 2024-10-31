@@ -25,6 +25,12 @@ app.use(session({
   app.post("/summary", upload.single("file"), (req,res,next) => {
     
     res.json({ message: 'File uploaded successfully', fileName: req.session.uploadedFile });
+
+    if (!req.session.userId) { 
+      req.session.userId = `user_${Date.now()}`; // Her kullanıcıya benzersiz bir ID verin
+    }
+    res.json({ message: 'Oturum başlatıldı', sessionId: req.session.userId });
+    
     const context = req.body.context;
     
     const pythonScriptPath = path.join(__dirname, './services/summary.py');
@@ -67,35 +73,6 @@ app.use(session({
       next(); // İşlemi devam ettirin
     });
   });
-  
-
-//#region routes
-
-app.post("/summary", upload.single("file"), (req,res,next) => {
-    
-    res.json({ message: 'File uploaded successfully', fileName: req.session.uploadedFile });
-    const context = req.body.context;
-    
-    const pythonScriptPath = path.join(__dirname, './services/summary.py');
-    console.log(context);
-    console.log(req.file.path);
-
-    exec(`python3 ${pythonScriptPath} ${req.file.path} "${context}"`,(error,stdout,stderr)=>{
-        
-        if(error){
-            console.error(`Error: ${error.message}`);
-            return res.status(500).json({ error: 'Failed to process file' });
-        }
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            return res.status(500).json({ error: 'Processing error' });
-        }
-
-        console.log(stdout)
-
-        res.json({ text: stdout });
-    })
-})
 
 //#endregion
 

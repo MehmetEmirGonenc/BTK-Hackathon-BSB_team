@@ -45,7 +45,7 @@ const HomePage = () => {
 
     if (selectedOption === 'summary') {
 
-      formData.append('summaryText', summaryText);
+      formData.append('context', summaryText);
       
       try {
         const response = await fetch('http://localhost:5000/summary', {
