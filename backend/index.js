@@ -2,10 +2,27 @@ const express = require("express");
 const path = require("path");
 const upload = require("./utils/upload.js");
 const session = require("express-session");
-const { exec } = require("child_process");
+//const { exec } = require("child_process");
 const { error } = require("console");
 const { stdout, stderr } = require("process");
 require("dotenv").config();
+const fs = require('fs');
+
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
+async function readFileContent() {
+  try {
+      // Dosyayı oku
+      const data = await fs.readFile(filePath, 'utf-8'); // 'utf-8' kodlaması ile oku
+      console.log('Dosya içeriği:', data); // İçeriği konsola yazdır
+      return data; // İçeriği bir string olarak döndür
+  } catch (error) {
+      console.error('Hata:', error); // Hata durumunda hata mesajını yazdır
+  }
+}
+
+
 
 const app = express();
 const PORT = 5000;
@@ -24,54 +41,52 @@ app.use(
   })
 );
 
-app.post("/summary", upload.single("file"), async(req, res, next) => {
-  res.json({
-    message: "File uploaded successfully",
-    fileName: req.session.uploadedFile,
-  });
+app.post("/summary", upload.single("file"), async (req, res, next) => {
   const context = req.body.context;
+  var tmpResponse = "";
+  try {
+    const extractScriptPath = path.join(__dirname, "/services/extract-text.py");
+    const { stdout, stderr } = await exec(`python3 ${extractScriptPath} ${req.file.path}`);
+    console.log('stdout:', stdout);
+    tmpResponse = stdout;
+    console.log('stderr:', stderr);
+  } catch (e) {
+    console.error(e); // should contain code (exit code) and signal (that caused the termination).
+  }
 
-  console.log(context);//
-  console.log(req.file.path);
+  try{
+    const summaryScriptPath = path.join(__dirname, "./services/summary.py");
+    console.log(`python3 ${summaryScriptPath} ${tmpResponse.replace(/\n/g, '')} ${context}`);
+    console.log(`python3 ${summaryScriptPath} ${tmpResponse.replace(/\n/g, '')} ${context}`);
+    const { stdout, stderr }= await exec(`python3 ${summaryScriptPath} ${tmpResponse.replace(/\n/g, '')} ${context}`);//.replace(/\n/g, '')
+    console.log('stdout:', stdout);
+    tmpResponse = stdout.replace(/\n/g, '');
+    console.log('stderr:', stderr);
+  
+  } catch (e) {
+    console.error(e); // should contain code (exit code) and signal (that caused the termination).
+  }
 
-  var textPath;
-  var pythonScriptPath = path.join(__dirname, "./services/extract-text.py");
-
-  await exec(`python3 ${pythonScriptPath} ${req.file.path}`,
-    (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error: ${error.message}`);
-        return res.status(500).json({ error: "Failed to process file" });
-      }
-      if (stderr) {
-        console.error(`stderr: ${stderr}`);
-        return res.status(500).json({ error: "Processing error" });
-      }
-
-      console.log("stdout pdf2text:");
-      console.log({ text: stdout });//loglamıyor 
+  fs.readFile(tmpResponse, 'utf8', (err, data) => {
+    if (err) {
+        console.error('Dosya okuma hatası:', err);
+        return;
     }
-  );
 
-  // pythonScriptPath = path.join(__dirname, "./services/summary.py");
-  // await exec(`python3 ${pythonScriptPath} *${textPath}`,
-  //   (error, stdout, stderr) => {
-  //     if (error) {
-  //       console.error(`Error: ${error.message}`);
-  //       return res.status(500).json({ error: "Failed to process file" });
-  //     }
-  //     if (stderr) {
-  //       console.error(`stderr: ${stderr}`);
-  //       return res.status(500).json({ error: "Processing error" });
-  //     }
 
-  //     console.log({ text: stdout });
-  //   }
-  // );
+    res.json({
+      message: "File uploaded successfully",
+      fileName: req.session.uploadedFile,
+      response: data,
+  
+    });
+});
 
-  console.log("done");
+
+
 
 });
+
 /*
 app.use((req, res, next) => {
   // Eğer oturum yoksa, işlemi tamamlayın
@@ -83,9 +98,9 @@ app.use((req, res, next) => {
 
     // Burada req.session'in null olmadığını varsayıyoruz
     if (req.session.uploadedFile) {
-      const filePath = path.join(__dirname, "temp", req.session.uploadedFile);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath); // Dosyayı sil
+      const tmpResponse = path.join(__dirname, "temp", req.session.uploadedFile);
+      if (fs.existsSync(tmpResponse)) {
+        fs.unlinkSync(tmpResponse); // Dosyayı sil
       }
     }
 

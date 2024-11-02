@@ -1,13 +1,9 @@
 import argparse  # Library for parsing command-line arguments
 import PyPDF2  # Library for reading PDF files
-import json  # Library for working with JSON data
 from pptx import Presentation  # Library for working with PowerPoint presentations
 
 # Function to extract text from a PDF file
-def extract_text_from_pdf(pdf_path):  
-    """
-    Converts the contents of a PDF file to a string.
-    """
+def extract_text_from_pdf(pdf_path):
     with open(pdf_path, 'rb') as pdf_file:
         pdf_reader = PyPDF2.PdfReader(pdf_file)
         extracted_text = ""
@@ -39,7 +35,7 @@ args = parser.parse_args()
 sourceFile = args.file_path
 out_path = sourceFile.split(".")
 file_type = out_path[-1]  # Identify the file type by its extension
-out_path[-1] = "json"  # Set output file extension to JSON
+out_path[-1] = "txt"  # Set output file extension to JSON
 out_path = ".".join(out_path)  # Reconstruct the output file path
 
 text_output = ""  # Initialize the output text
@@ -47,18 +43,13 @@ text_output = ""  # Initialize the output text
 # Check the file type and call the appropriate function
 if file_type == "pdf":  
     text_output = extract_text_from_pdf(sourceFile)
-if file_type == "pptx":
-    text_output = extract_text_from_pptx(sourceFile)
 
-# Create a dictionary with the source file and extracted text
-veri = {
-    "source": sourceFile,
-    "text": text_output,
-}
-
-# Write the extracted text to a new JSON file
-with open(out_path, 'w') as f:
-    json.dump(veri, f, ensure_ascii=False, indent=4)
+# Write the extracted text to a new TXT file
+with open(out_path, "w") as file:
+    file.write(f"{sourceFile}\n")
+    file.write(text_output)
 
 # Print the path of the output JSON file
 print(out_path)
+
+
