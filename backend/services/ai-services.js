@@ -11,7 +11,7 @@ const summaryText = async (filePath, context) => {
   try {
     const summaryScriptPath = path.join(__dirname, "./py-scripts/summary.py");
     const { stdout, stderr } = await execPromise(
-      `python3 ${summaryScriptPath} ${filePath} ${context}`
+      `python3 ${summaryScriptPath} ${filePath} "${context}"`
     );
     return stdout.trim();
   } catch (e) {
