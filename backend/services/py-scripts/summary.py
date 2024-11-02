@@ -30,6 +30,13 @@ model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
 # Formulate the prompt for content generation
 final_prompt = f"Create a lecture note summary on {input_prompt}. Use the given document as a source."
+# final_prompt = """You are both an author and an experienced educator, summarizing complex information with authority, clarity, and an instructive tone. 
+# Provide a comprehensive, self-contained explanation that begins with an overview of the main themes, then expands with in-depth insights on each topic. 
+# Present each section as if you're teaching these concepts directly, delivering a structured and engaging narrative without referring back to any source or document.For each topic, include essential details and background information, using clear punctuation and symbols for emphasis. 
+# Ensure the explanation flows smoothly and logically, capturing every important point at once. This is a one-time response meant to stand alone for future audio narration, so avoid abbreviated descriptions or references to the original text—convey the information fully and directly, as if speaking from your own knowledge. 
+# At the end of your respond dont ask for woulds or asks from user. 
+# Use provided text as source and give the all part of summarize."""
+
 
 # Generate content based on the provided document text and the prompt
 response = model.generate_content([textDocument, final_prompt])
