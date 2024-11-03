@@ -45,6 +45,10 @@ if file_type == "pdf":
     text_output = extract_text_from_pdf(sourceFile)
 elif file_type == "pptx":
     text_output = extract_text_from_pptx(sourceFile)
+elif file_type == "txt":
+    out_path = sourceFile
+    print(out_path)
+    exit()
 else:
     print(f"Unsupported file type: {file_type}")
     exit(1)
