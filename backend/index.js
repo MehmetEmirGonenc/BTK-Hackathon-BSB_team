@@ -23,43 +23,56 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 10 * 60 * 1000, // 10 dakika
-      httpOnly: true, // JavaScript erişimini engeller
-      secure: false, // HTTPS üzerinde aktif et, geliştirme için false
-      sameSite: "lax", // CSRF koruması
+      httpOnly: true, 
+      secure: false, 
+      sameSite: "lax", 
     },
   })
 );
 
 app.post("/summary", upload.single("file"), async (req, res, next) => {
-
   const filePath = req.file.path;
   const context = req.body.context;
 
-  var tmpResponse = "";
+  try {
+    // Attempt to extract text from the file
+    let tmpResponse = await extractText(filePath);
 
-  tmpResponse = await extractText(filePath);
-
-  tmpResponse = await summaryText(tmpResponse, context);
-
-  if (!tmpResponse) {
-    console.error("tmpResponse is undefined or empty");
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-
-  summaryPath = tmpResponse;
-  fs.readFile(tmpResponse, "utf8", (err, data) => {
-    if (err) {
-      console.error("Dosya okuma hatası:", err);
-      return;
+    // Check if tmpResponse is valid
+    if (!tmpResponse || typeof tmpResponse !== 'string') {
+      console.error("Invalid response from extractText");
+      return res.status(400).json({ error: "Unable to extract text from the file" });
     }
 
-    res.json({
-      message: "File uploaded successfully",
-      fileName: req.session.uploadedFile,
-      response: data,
-     });
-   });
+    // Attempt to summarize the extracted text
+    tmpResponse = await summaryText(tmpResponse, context);
+    
+    // Check if summary response is valid
+    if (!tmpResponse) {
+      console.error("tmpResponse is undefined or empty");
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    // Read the summary file
+    fs.readFile(tmpResponse, "utf8", (err, data) => {
+      if (err) {
+        console.error("File read error:", err);
+        return res.status(500).json({ error: "Error reading summary file" });
+      }
+
+      res.json({
+        message: "File uploaded successfully",
+        fileName: req.session.uploadedFile,
+        response: data,
+      });
+    });
+
+  } catch (error) {
+    console.error("An error occurred:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 });
+
 
 app.post("/test", upload.single("file"), async (req, res, next) => {
   const filePath = req.file.path;

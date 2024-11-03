@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Navbar from '../../components/navbar/Navbar.jsx';
 import Footer from '../../components/footer/Footer.jsx';
 import './HomePage.scss';
 
+async function loadPDFWorker() {
+  const { default: worker } = await import('pdfjs-dist/legacy/build/pdf.worker.entry');
+  pdfjs.GlobalWorkerOptions.workerSrc = URL.createObjectURL(new Blob([worker], { type: 'application/javascript' }));
+}
 
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.js`;
 
 const HomePage = () => {
   const [file, setFile] = useState(null);
@@ -14,6 +17,12 @@ const HomePage = () => {
   const [selectedOption, setSelectedOption] = useState('');
   const [dragActive, setDragActive] = useState(false);
   const [numPages, setNumPages] = useState(null);
+  const [summaryResponse, setSummaryResponse] = useState('');
+
+
+  useEffect(() => {
+    loadPDFWorker();
+  }, []);
 
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
@@ -68,22 +77,28 @@ const HomePage = () => {
     formData.append('file', file);
 
     if (selectedOption === 'summary') {
-      formData.append('context', summaryText);
-      
-      try {
-        const response = await fetch('http://localhost:5000/summary', {
-          method: 'POST',
-          body: formData,
-        });
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        console.error('Error uploading file:', error);
-      }
+        formData.append('context', summaryText);
+        
+        try {
+            const response = await fetch('http://localhost:5000/summary', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await response.json();
+            if (data.response) {
+                setSummaryResponse(data.response);  // Set the response in state
+                console.log(data.response)
+            } else {
+                console.error('No response received from the server');
+            }
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
     } else if (selectedOption === 'test') {
-      formData.append('test', 'Test selected');
+        formData.append('test', 'Test selected');
     }
-  };
+};
+
 
   return (
     <div className="homepage">
@@ -131,26 +146,36 @@ const HomePage = () => {
 
             <button type="submit">Upload</button>
           </form>
+
+            {/* Preview Section */}
+          <div className="file-preview">
+            {filePreview ? (
+              file.type.startsWith('image') ? (
+                <img src={filePreview} alt="Uploaded preview" />
+              ) : file.type === 'application/pdf' ? (
+                <Document file={filePreview} onLoadSuccess={onDocumentLoadSuccess}>
+                  {Array.from(new Array(numPages), (el, index) => (
+                    <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+                  ))}
+                </Document>
+              ) : (
+                <pre>{filePreview}</pre>
+              )
+            ) : (
+              <p>No preview available</p>
+            )}
+          </div>
         </div>
 
-        {/* Preview Section */}
-        <div className="file-preview">
-          {filePreview ? (
-            file.type.startsWith('image') ? (
-              <img src={filePreview} alt="Uploaded preview" />
-            ) : file.type === 'application/pdf' ? (
-              <Document file={filePreview} onLoadSuccess={onDocumentLoadSuccess}>
-                {Array.from(new Array(numPages), (el, index) => (
-                  <Page key={`page_${index + 1}`} pageNumber={index + 1} />
-                ))}
-              </Document>
+        <div className='display-result'>
+            {summaryResponse ? (
+                <pre>{summaryResponse}</pre>  // Display the summary response
             ) : (
-              <pre>{filePreview}</pre>
-            )
-          ) : (
-            <p>No preview available</p>
-          )}
+                <p>No summary available</p>  // Default message if no summary
+            )}
         </div>
+
+        
       </div>
       <Footer />
     </div>
