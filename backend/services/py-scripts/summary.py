@@ -35,7 +35,7 @@ Your goal is to present the material in an engaging and informative way, startin
 Then, provide detailed insights into each topic, structuring your explanation as if teaching directly to an audience. 
 Use clear language, and emphasize key points with appropriate punctuation and symbols. 
 Ensure a smooth flow of information, making it easy for listeners to follow. 
-This summary should stand alone for audio narration, so focus on conveying the content clearly and fully, without referencing external sources."""
+Focus on conveying the content clearly and fully, without referencing external sources."""
 
 #final_prompt = f"Create a lecture note summary on {input_prompt}. Use the given document as a source."
 # final_prompt = """You are both an author and an experienced educator, summarizing complex information with authority, clarity, and an instructive tone. 

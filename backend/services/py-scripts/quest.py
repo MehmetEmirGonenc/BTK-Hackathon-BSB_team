@@ -1,5 +1,7 @@
 import argparse
 import google.generativeai as genai
+import os
+
 
 # Komut satırı argümanlarını tanımlayın
 parser = argparse.ArgumentParser(description="Ders notlarından sınav oluştur")
@@ -9,7 +11,7 @@ args = parser.parse_args()
 sourceFile = args.file
 
 # API anahtarını ayarla
-genai.configure(api_key="AIzaSyCStzQ1Pv37EINES5z9HAybwSQ94sQGKdw")
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
 # Kaynak dosyayı oku
