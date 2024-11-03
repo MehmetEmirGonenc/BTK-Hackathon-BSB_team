@@ -1,49 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import React, { useState } from 'react';
+import { Worker, Viewer } from '@react-pdf-viewer/core';
 import Navbar from '../../components/navbar/Navbar.jsx';
 import Footer from '../../components/footer/Footer.jsx';
+import ReactMarkdown from 'react-markdown';
+import Loading from '../../components/loading/loading.jsx';
 import './HomePage.scss';
-
-async function loadPDFWorker() {
-  const { default: worker } = await import('pdfjs-dist/legacy/build/pdf.worker.entry');
-  pdfjs.GlobalWorkerOptions.workerSrc = URL.createObjectURL(new Blob([worker], { type: 'application/javascript' }));
-}
-
 
 const HomePage = () => {
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [filePreview, setFilePreview] = useState('');
   const [summaryText, setSummaryText] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [dragActive, setDragActive] = useState(false);
-  const [numPages, setNumPages] = useState(null);
   const [summaryResponse, setSummaryResponse] = useState('');
-
-
-  useEffect(() => {
-    loadPDFWorker();
-  }, []);
 
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
     setFile(uploadedFile);
-
-    // File preview logic (for text, images, PDF, and PPTX)
-    if (uploadedFile && uploadedFile.type.startsWith('text')) {
-      const reader = new FileReader();
-      reader.onload = (e) => setFilePreview(e.target.result);
-      reader.readAsText(uploadedFile);
-    } else if (uploadedFile && uploadedFile.type.startsWith('image')) {
-      setFilePreview(URL.createObjectURL(uploadedFile));
-    } else if (uploadedFile && uploadedFile.type === 'application/pdf') {
-      setFilePreview(URL.createObjectURL(uploadedFile));
-    } else {
-      setFilePreview(''); // Reset preview for unsupported file types
-    }
-  };
-
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
+    setFilePreview(URL.createObjectURL(uploadedFile));
   };
 
   const handleSummaryTextChange = (e) => {
@@ -73,32 +48,31 @@ const HomePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     const formData = new FormData();
     formData.append('file', file);
 
     if (selectedOption === 'summary') {
-        formData.append('context', summaryText);
-        
-        try {
-            const response = await fetch('http://localhost:5000/summary', {
-                method: 'POST',
-                body: formData,
-            });
-            const data = await response.json();
-            if (data.response) {
-                setSummaryResponse(data.response);  // Set the response in state
-                console.log(data.response)
-            } else {
-                console.error('No response received from the server');
-            }
-        } catch (error) {
-            console.error('Error uploading file:', error);
+      formData.append('context', summaryText);
+      try {
+        const response = await fetch('http://localhost:5000/summary', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await response.json();
+        if (data.response) {
+          setSummaryResponse(data.response);
+          setLoading(false)
+        } else {
+          console.error('No response received from the server');
         }
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
     } else if (selectedOption === 'test') {
-        formData.append('test', 'Test selected');
+      formData.append('test', 'Test selected');
     }
-};
-
+  };
 
   return (
     <div className="homepage">
@@ -147,17 +121,17 @@ const HomePage = () => {
             <button type="submit">Upload</button>
           </form>
 
-            {/* Preview Section */}
+          {/* Preview Section */}
           <div className="file-preview">
             {filePreview ? (
               file.type.startsWith('image') ? (
                 <img src={filePreview} alt="Uploaded preview" />
               ) : file.type === 'application/pdf' ? (
-                <Document file={filePreview} onLoadSuccess={onDocumentLoadSuccess}>
-                  {Array.from(new Array(numPages), (el, index) => (
-                    <Page key={`page_${index + 1}`} pageNumber={index + 1} />
-                  ))}
-                </Document>
+                <div style={{ height: '750px' }}>
+                  <Worker workerUrl={`https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`}>
+                    <Viewer fileUrl={filePreview} />
+                  </Worker>
+                </div>
               ) : (
                 <pre>{filePreview}</pre>
               )
@@ -166,15 +140,13 @@ const HomePage = () => {
             )}
           </div>
         </div>
-
-        <div className='display-result'>
-            {summaryResponse ? (
-                <pre>{summaryResponse}</pre>  // Display the summary response
-            ) : (
-                <p>No summary available</p>  // Default message if no summary
-            )}
-        </div>
-
+          {loading ? <Loading/> : 
+            <div className='display-result'>
+            <ReactMarkdown>
+              {summaryResponse || "No summary available"}
+            </ReactMarkdown>
+            </div>
+          }
         
       </div>
       <Footer />

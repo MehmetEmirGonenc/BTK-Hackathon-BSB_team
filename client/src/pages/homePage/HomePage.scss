@@ -8,7 +8,7 @@
   
 
   .file-upload {
-    width: 45%;
+    width: 40%;
     .dropzone {
       width: 100%;
       padding: 2rem;
@@ -58,6 +58,7 @@
     .file-preview {
       text-align: left;
       padding: 2rem;
+      margin-top: 10px;
       border: 1px solid #ccc;
       border-radius: 10px;
       background-color: #f9f9f9;
@@ -77,8 +78,10 @@
     }
   }
   .display-result{
-    width: 40%;
-
+    width: 50%;
+    padding: 20px;
+    margin-left: 40px;
+   
   }
   }
   
