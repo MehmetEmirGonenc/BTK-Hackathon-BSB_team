@@ -49,6 +49,11 @@ Ayrıca, Gemini AI entegrasyonu ile kullanıcıların belgeleri üzerinde daha e
 
 ### Projeyi Başlatma:
 
+0. **Çevresel Değişkenleri Ayarla:** Projenin düzgün çalışabilmesi için gerekli API anahtarını .env dosyanıza ekleyin.
+```bash
+GOOGLE_API_KEY=your_google_api_key_here
+```
+
 1. **Backend Sunucusunu Çalıştır:** `backend` dizininde terminal açarak sunucuyu başlatın:
 
    ```bash
