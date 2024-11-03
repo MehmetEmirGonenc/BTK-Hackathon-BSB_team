@@ -1,6 +1,6 @@
 # Notperver
 
-![Notperver Proje Görseli](path/to/your/image.jpg)  <!-- Burada resmin yolu belirtin -->
+![Notperver Proje Görseli](notperver.jpeg)  <!-- Burada resmin yolu belirtin -->
 
 Notperver, kullanıcıların kendi sağladıkları dökümanlar üzerinden eğitim ve öğrenme süreçlerini desteklemeyi amaçlayan bir web uygulamasıdır. Şu anda PDF ve PPTX formatındaki belgeleri destekleyen platform, gelecekte daha fazla formatın eklenmesiyle gelişmeyi hedeflemektedir.
 
@@ -18,14 +18,15 @@ Notperver, bu özellikleri ile eğitim alanında önemli bir araç olmayı hedef
 
 Projemizi dört arkadaş olarak geliştiriyoruz. Ekip üyelerinin görev dağılımı ve GitHub hesapları aşağıda belirtilmiştir:
 
-- **Mehmet Emir Gönenc** - Proje Yöneticisi | [GitHub](https://github.com/MehmetEmirGonenc)
-- **Ahmet Yılmaz** - Backend Geliştirici | [GitHub](https://github.com/AhmetYilmaz)
-- **Ayşe Demir** - Frontend Geliştirici | [GitHub](https://github.com/AyseDemir)
-- **Zeynep Çelik** - İçerik Yöneticisi | [GitHub](https://github.com/ZeynepCelik)
-
+- **[Atakan Demir](https://github.com/Mr0Ctrl)**   |   Yapay Zeka  - Backend Geliştirici
+- **[Serdar Altanay](https://github.com/serdarAltanay)**   |   Backend - Frontend Geliştirici
+- **[Ömer Kocaman](https://github.com/omerkocaman)**   |   Python - Yapay Zeka Geliştirici
+- **[Mehmet Gönenç](https://github.com/MehmetEmirGonenc)**   |   Python - Propmt Geliştirici
 ## Teknolojik Altyapı:
 
-Notperver, modern web teknolojileri kullanılarak geliştirilmiştir. Frontend kısmı React ile, backend kısmı ise Express.js ile inşa edilmiştir. Uygulama, kullanıcı dostu bir arayüz ile etkili bir kullanıcı deneyimi sunmayı hedeflemektedir.
+Notperver, modern web teknolojileri kullanılarak geliştirilmiştir. Projenin frontend kısmı React ile inşa edilmiştir, bu da kullanıcı arayüzünün dinamik ve etkileşimli olmasını sağlar. Express.js kullanılarak oluşturulan backend, uygulamanın verimliliğini ve güvenliğini artırarak, kullanıcı verilerinin yönetimi için sağlam bir yapı sunmaktadır.
+
+Ayrıca, Gemini AI entegrasyonu ile kullanıcıların belgeleri üzerinde daha etkili analizler yapabilmesi sağlanmıştır. Gemini AI, döküman içeriğini anlamlandırarak, kullanıcıların not çıkarma ve değerlendirme sınavı oluşturma süreçlerini optimize etmektedir. Bu özellik, öğrenme deneyimini kişiselleştirerek kullanıcıların daha verimli bir şekilde bilgi edinmelerine yardımcı olur.
 
 ### Node.js Ortamının Kurulumu:
 
@@ -84,66 +85,3 @@ Proje, BTK 2024 Hackathon'u için geliştirilmiş olup, sadece iki haftada tamam
 ### BTK-Hackathon-BSB_team
 
 This repository was created for developing an application about education on BTK 2024 Hackathon.
-
-# Text to Speech App
-
-This project is a **Text to Speech** web application built using React (frontend) and Express.js (backend). The app allows users to upload text files (PDF, PPTX, TXT) and convert the text content into speech.
-
-## Project Structure
-
-- `backend/`: Contains the Express.js server setup.
-
-  - `index.js`: Main server file.
-  - `multer.js`: Handles file upload using Multer.
-
-- `client/`: Contains the React application.
-
-  - `src/`: Main source code for the frontend.
-  - `public/`: Public assets for the frontend.
-
-- `Samples/`: Directory for storing sample files.
-
-  - `pdf_samples/`: Example PDF files.
-  - `pptx_samples/`: Example PowerPoint (PPTX) files.
-  - `txt_samples/`: Example text files.
-
-- `src/`: Contains Python scripts for file conversions.
-  - `conversions.py`: Handles file format conversions.
-  - `text2speech.py`: Converts text into speech using a text-to-speech engine.
-
-## Getting Started
-
-### Prerequisites
-
-Make sure you have the following installed on your system:
-
-- Node.js
-- Python 3.x (for handling conversions)
-- pip (Python package manager)
-
-### Installation
-
-1. **Clone the repository:**
-
-   ```bash
-   git clone https://github.com/MehmetEmirGonenc/BTK-Hackathon-BSB_team.git
-   cd BTK-Hackathon-BSB_team
-   ```
-
-2. **Backend setup**
-   ```bash
-   cd backend
-   npm install
-   ```
-3. **Backend setup**
-   ```bash
-   cd backend
-   npm install
-   node index.js
-   ```
-4. **Frontend setup**
-   ```bash
-   cd client
-   npm install
-   npm run start
-   ```
