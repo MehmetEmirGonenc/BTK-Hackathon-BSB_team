@@ -51,7 +51,6 @@ else:
 
 # Write the extracted text to a new TXT file with utf-8 encoding
 with open(out_path, "w", encoding="utf-8") as file:
-    file.write(f"{sourceFile}\n")
     file.write(text_output)
 
 # Print the path of the output .txt file

@@ -36,7 +36,7 @@ app.use(
   })
 );
 
-app.post("/summary", upload.single("file"), async (req, res, next) => {
+app.post("/test", upload.single("file"), async (req, res, next) => {
   const filePath = req.file.path;
   const context = req.body.context;
 
@@ -80,7 +80,7 @@ app.post("/summary", upload.single("file"), async (req, res, next) => {
 });
 
 
-app.post("/test", upload.single("file"), async (req, res, next) => {
+app.post("/summary", upload.single("file"), async (req, res, next) => {
   const filePath = req.file.path;
   const context = req.body.context;
 

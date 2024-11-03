@@ -40,8 +40,7 @@ out_path[-1] = "txt"
 out_path = ".".join(out_path)
 
 # Sonucu dosyaya yaz
-with open(out_path, "w") as file:
-    file.write(f"{sourceFile}\n")
+with open(out_path, "w", encoding='utf-8') as file:
     file.write("Generated Exam:\n\n")
     file.write(text_output)
 

@@ -64,7 +64,7 @@ out_path[-1] = "txt"
 out_path = ".".join(out_path)
 
 # Write the summary output to the new TXT file
-with open(out_path, "w") as file:
+with open(out_path, "w",encoding="utf-8") as file:
     file.write(f"{sourceFile}\n")
     file.write(f"{input_prompt}\n")
     file.write(text_output)
