@@ -11,7 +11,12 @@
   .file-upload {
     width: 50%;
     .dropzone {
-      width: 100%;
+      display: flex;
+      justify-self: center;
+      justify-content: center;
+      align-items: center;
+      width: 80%;
+      height: 9vh;
       padding: 2rem;
       border: 2px dashed #ccc;
       border-radius: 10px;
@@ -93,7 +98,7 @@
     .file-preview {
       text-align: left;
       padding: 2rem;
-      height: 50%;
+      height: 40%;
       margin-top: 10px;
       border: 1px solid #ccc;
       border-radius: 10px;
@@ -116,6 +121,8 @@
     .options {
   display: flex;
   gap: 10px;
+  display: flex;
+  justify-self: center;
 
   button {
     padding: 10px 20px;
