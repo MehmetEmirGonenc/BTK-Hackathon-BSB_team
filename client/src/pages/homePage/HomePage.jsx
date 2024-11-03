@@ -109,7 +109,7 @@ const HomePage = () => {
 
             {selectedOption === 'summary' && (
               <label className="summary-text">
-                Summary Text:
+                Please write if you want to any specifications:
                 <input
                   type="text"
                   value={summaryText}
@@ -140,13 +140,16 @@ const HomePage = () => {
             )}
           </div>
         </div>
-          {loading ? <Loading/> : 
+          
             <div className='display-result'>
+            
+            {loading ? <Loading/> : 
             <ReactMarkdown>
-              {summaryResponse || "No summary available"}
+              {summaryResponse || "Please insert file to get summary"}
             </ReactMarkdown>
+             }
             </div>
-          }
+         
         
       </div>
       <Footer />

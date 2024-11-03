@@ -5,7 +5,7 @@ const Loading = () => {
   return (
     <div className="loading-container">
       <div className="loader"></div>
-      <p>Yükleniyor...</p>
+      <p>Yanıt Bekleniyor (ortalama 15 sn) ...</p>
     </div>
   );
 };
