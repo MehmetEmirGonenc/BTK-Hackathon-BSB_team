@@ -30,23 +30,14 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
 # Formulate the prompt for content generation
-final_prompt = f"""Create a comprehensive lecture note summary on {input_prompt} using the provided document as a source. 
+
+final_prompt = f"""Create a comprehensive summary on {input_prompt} using the provided document as a source. 
 Your goal is to present the material in an engaging and informative way, starting with a brief overview of the main themes. 
-Then, provide detailed insights into each topic, structuring your explanation as if teaching directly to an audience. 
-Use clear language, and emphasize key points with appropriate punctuation and symbols. 
+Then, provide detailed insights into each topic. Use clear language, and emphasize key points with appropriate punctuation and symbols. 
 Ensure a smooth flow of information, making it easy for listeners to follow. 
-Focus on conveying the content clearly and fully, without referencing external sources."""
-
-#final_prompt = f"Create a lecture note summary on {input_prompt}. Use the given document as a source."
-# final_prompt = """You are both an author and an experienced educator, summarizing complex information with authority, clarity, and an instructive tone. 
-# Provide a comprehensive, self-contained explanation that begins with an overview of the main themes, then expands with in-depth insights on each topic. 
-# Present each section as if you're teaching these concepts directly, delivering a structured and engaging narrative without referring back to any source or document.
-# For each topic, include essential details and background information, using clear punctuation and symbols for emphasis. 
-# Ensure the explanation flows smoothly and logically, capturing every important point at once. 
-# This is a one-time response meant to stand alone for future audio narration, so avoid abbreviated descriptions or references to the original text—convey the information fully and directly, as if speaking from your own knowledge. 
-# At the end of your respond dont ask for woulds or asks from user. 
-# Use provided text as source and give the all part of summarize."""
-
+Focus on conveying the content clearly and fully, without referencing external sources.
+Use a formal language. 
+"""
 
 # Generate content based on the provided document text and the prompt
 response = model.generate_content([textDocument, final_prompt])
@@ -65,8 +56,6 @@ out_path = ".".join(out_path)
 
 # Write the summary output to the new TXT file
 with open(out_path, "w",encoding="utf-8") as file:
-    file.write(f"{sourceFile}\n")
-    file.write(f"{input_prompt}\n")
     file.write(text_output)
 
 # Print the path of the output summary file

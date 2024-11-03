@@ -1,6 +1,6 @@
-import argparse  # Library for parsing command-line arguments
-import PyPDF2  # Library for reading PDF files
-from pptx import Presentation  # Library for working with PowerPoint presentations
+import argparse
+import PyPDF2
+from pptx import Presentation 
 
 # Function to extract text from a PDF file
 def extract_text_from_pdf(pdf_path):

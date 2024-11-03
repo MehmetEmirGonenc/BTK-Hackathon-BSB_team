@@ -5,6 +5,8 @@ import Footer from '../../components/footer/Footer.jsx';
 import ReactMarkdown from 'react-markdown';
 import Loading from '../../components/loading/loading.jsx';
 import { toast } from 'react-toastify';
+import { FiVolume2 } from 'react-icons/fi';
+import { FaPause } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css';
 import './HomePage.scss';
 
@@ -17,6 +19,7 @@ const HomePage = () => {
   const [selectedOption, setSelectedOption] = useState('');
   const [dragActive, setDragActive] = useState(false);
   const [summaryResponse, setSummaryResponse] = useState('');
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
@@ -60,7 +63,7 @@ const HomePage = () => {
       setLoading(false);
       return;
     }
-    if(!selectedOption){
+    if (!selectedOption) {
       const errorMessage = "Please select option (test or summary)";
       setError(errorMessage);
       toast.error(error);
@@ -72,42 +75,37 @@ const HomePage = () => {
     formData.append('file', file);
     formData.append('context', summaryText);
 
-    if (selectedOption === 'summary') {
-      try {
-        const response = await fetch('http://localhost:5000/summary', {
-          method: 'POST',
-          body: formData,
-        });
-        const data = await response.json();
-        if (data.response) {
-          setSummaryResponse(data.response);
-          setLoading(false);
-        } else {
-          console.error('No response received from the server');
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error('Error uploading file:', error);
+    const endpoint = selectedOption === 'summary' ? 'summary' : 'test';
+
+    try {
+      const response = await fetch(`http://localhost:5000/${endpoint}`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      if (data.response) {
+        setSummaryResponse(data.response);
+        setLoading(false);
+      } else {
+        console.error('No response received from the server');
         setLoading(false);
       }
-    } else if (selectedOption === 'test') {
-      try {
-        const response = await fetch('http://localhost:5000/test', {
-          method: 'POST',
-          body: formData,
-        });
-        const data = await response.json();
-        if (data.response) {
-          setSummaryResponse(data.response);
-          setLoading(false);
-        } else {
-          console.error('No response received from the server');
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error('Error uploading file:', error);
-        setLoading(false);
-      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      setLoading(false);
+    }
+  };
+
+  const handleTextToSpeech = () => {
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    } else {
+      const newUtterance = new SpeechSynthesisUtterance(summaryResponse);
+      newUtterance.lang = 'en-US'; 
+      newUtterance.onend = () => setIsSpeaking(false);
+      window.speechSynthesis.speak(newUtterance);
+      setIsSpeaking(true);
     }
   };
 
@@ -167,7 +165,6 @@ const HomePage = () => {
             <button type="submit">Upload</button>
           </form>
 
-          {/* Preview Section */}
           <div className="file-preview">
             {filePreview ? (
               file.type.startsWith('image') ? (
@@ -188,11 +185,18 @@ const HomePage = () => {
         </div>
           
         <div className='display-result'>
-          {loading ? <Loading /> : 
-          <ReactMarkdown>
-            {summaryResponse || "Please insert file and hit upload to get summary or test"}
-          </ReactMarkdown>
-          }
+          {loading ? <Loading /> : (
+            <div>
+              {summaryResponse && (
+                <button className="speaker-button" onClick={handleTextToSpeech}>
+                  {isSpeaking ? <FaPause size={24} /> : <FiVolume2 size={24} />} 
+                </button>
+              )}
+              <ReactMarkdown>
+                {summaryResponse || "Please insert file and hit upload to get summary or test"}
+              </ReactMarkdown>
+            </div>
+          )}
         </div>
       </div>
       <Footer />

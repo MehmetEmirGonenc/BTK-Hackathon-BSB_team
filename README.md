@@ -51,14 +51,9 @@ Make sure you have the following installed on your system:
    ```bash
    cd backend
    npm install
-   ```
-3. **Backend setup**
-   ```bash
-   cd backend
-   npm install
    node index.js
    ```
-4. **Frontend setup**
+3. **Frontend setup**
    ```bash
    cd client
    npm install
