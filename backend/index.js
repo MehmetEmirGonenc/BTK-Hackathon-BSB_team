@@ -104,7 +104,7 @@ app.post("/A", upload.single("file"), async (req, res, next) => {//A yerine narr
    });
 });
 
-//BURA HEM CALISMIYOR HEM DE HATA VERIYOR
+//BURA HEM CALISMIYOR HEM DE HATA VERIYOR olabilir bilmiyorum
 
 // app.use((req, res, next) => {
 //   // Eğer oturum yoksa, işlemi tamamlayın
