@@ -99,6 +99,7 @@
       text-align: left;
       padding: 2rem;
       min-height: 30vh;
+      max-height: 100vh;
       margin-top: 10px;
       border: 1px solid #ccc;
       border-radius: 10px;
@@ -148,6 +149,7 @@
   .display-result{
     width: 50%;
     text-align: left;
+    max-height:165vh ;
     padding: 20px;
     margin-left: 50px;
     background-color: #f9f9f9;
