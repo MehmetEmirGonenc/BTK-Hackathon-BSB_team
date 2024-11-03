@@ -1,4 +1,2 @@
-/node_modules
-node_modules
-
-/uploads
+/node_modules/
+/uploads/

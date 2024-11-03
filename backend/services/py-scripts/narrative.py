@@ -1,5 +1,6 @@
 import argparse  # Library for parsing command-line arguments
 import google.generativeai as genai  # Google Generative AI library for generating content
+import os
 
 # Set up argument parser with description
 parser = argparse.ArgumentParser(description="Generate a narrative from the provided text")
@@ -16,8 +17,8 @@ sourceFile = args.json_file
 with open(sourceFile, 'r', encoding='utf-8') as file:
     textDocument = file.read()
 
-# Configure the Generative AI model with the API key (best practice: replace with environment variable in production)
-genai.configure(api_key="AIzaSyDqC5cme1DLiVksst_l5KDWOJ8o842Gj_I")
+# Configure the Generative AI model with the API key (best practice: replace with environment variable in production) AIzaSyDqC5cme1DLiVksst_l5KDWOJ8o842Gj_I"
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
 # Define the prompt to create a detailed educational narrative from the text content
