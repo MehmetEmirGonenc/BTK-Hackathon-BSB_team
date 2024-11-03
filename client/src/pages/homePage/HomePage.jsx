@@ -193,7 +193,7 @@ const HomePage = () => {
                 </button>
               )}
               <ReactMarkdown>
-                {summaryResponse || "Please insert file and hit upload to get summary or test"}
+                {summaryResponse || "Please insert file and hit upload to get summary or test. Speaker option can take a minute or more"}
               </ReactMarkdown>
             </div>
           )}
