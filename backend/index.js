@@ -3,8 +3,6 @@ const path = require("path");
 const upload = require('./utils/upload.js');
 const session = require('express-session');
 const { exec } = require("child_process");
-const { error } = require("console");
-const { stdout, stderr } = require("process");
 require('dotenv').config();
 
 const app = express();
@@ -20,26 +18,23 @@ app.use(session({
       secure: false,          // HTTPS üzerinde aktif et, geliştirme için false
       sameSite: 'lax'         // CSRF koruması
     }
-  }));
+}));
 
-  app.post("/summary", upload.single("file"), (req,res,next) => {
-    
-    res.json({ message: 'File uploaded successfully', fileName: req.session.uploadedFile });
-
+app.post("/summary", upload.single("file"), async(req, res, next) => {
     if (!req.session.userId) { 
       req.session.userId = `user_${Date.now()}`; // Her kullanıcıya benzersiz bir ID verin
     }
-    res.json({ message: 'Oturum başlatıldı', sessionId: req.session.userId });
     
     const context = req.body.context;
-    
+
     const pythonScriptPath = path.join(__dirname, './services/summary.py');
+
     console.log(context);
+
     console.log(req.file.path);
 
-    exec(`python3 ${pythonScriptPath} ${req.file.path} "${context}"`,(error,stdout,stderr)=>{
-        
-        if(error){
+  await  exec(`python3 ${pythonScriptPath} ${req.file.path} "${context}"`, (error, stdout, stderr) => {
+        if (error) {
             console.error(`Error: ${error.message}`);
             return res.status(500).json({ error: 'Failed to process file' });
         }
@@ -48,21 +43,17 @@ app.use(session({
             return res.status(500).json({ error: 'Processing error' });
         }
 
-        console.log(stdout)
+        console.log(stdout);
+        res.json({ message: 'Oturum başlatıldı', sessionId: req.session.userId, text: stdout });
+    });
+});
 
-        res.json({ text: stdout });
-    })
-})
-
-  app.use((req, res, next) => {
-    // Eğer oturum yoksa, işlemi tamamlayın
+app.use((req, res, next) => {
     if (!req.session) return next();
   
-    // Oturum sona erdiğinde veya silindiğinde dosyayı sil
     req.session.destroy(err => {
       if (err) return next(err);
-  
-      // Burada req.session'in null olmadığını varsayıyoruz
+
       if (req.session.uploadedFile) {
         const filePath = path.join(__dirname, 'temp', req.session.uploadedFile);
         if (fs.existsSync(filePath)) {
@@ -70,16 +61,14 @@ app.use(session({
         }
       }
   
-      next(); // İşlemi devam ettirin
+      next();
     });
-  });
+});
 
-//#endregion
-
-app.use("*", (req, res, next) => {
+app.use("*", (req, res) => {
     res.status(404).json("Bulunamadı");
 });
 
 app.listen(PORT, () => {
-console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
