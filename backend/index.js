@@ -7,12 +7,14 @@ const fs = require("fs");
 
 const upload = require("./utils/upload.js");
 const { extractText, readText } = require("./services/text-services.js");
-const { summaryText, questFromText } = require("./services/ai-services.js");
+const { summaryText, questFromText, narrativeFromText } = require("./services/ai-services.js");
 
 const path = require("path");
 
 const app = express();
 const PORT = 5000;
+
+var summaryPath = "";
 
 app.use(
   session({
@@ -29,14 +31,39 @@ app.use(
 );
 
 app.post("/summary", upload.single("file"), async (req, res, next) => {
+  const filePath = req.file.path;
   const context = req.body.context;
   var tmpResponse = "";
 
-  tmpResponse = await extractText(req.file.path);
+  tmpResponse = await extractText(filePath);
 
-  tmpResponse = await summaryText(tmpResponse, `"${context}"`);
+  tmpResponse = await summaryText(tmpResponse, context);
 
-  tmpResponse = await questFromText(tmpResponse);
+  summaryPath = tmpResponse;
+  fs.readFile(tmpResponse, "utf8", (err, data) => {
+    if (err) {
+      console.error("Dosya okuma hatası:", err);
+      return;
+    }
+
+    res.json({
+      message: "File uploaded successfully",
+      fileName: req.session.uploadedFile,
+      response: data,
+     });
+   });
+});
+
+app.post("/test", upload.single("file"), async (req, res, next) => {
+  const filePath = req.file.path;
+  const context = req.body.context;
+  var tmpResponse = "";
+
+  tmpResponse = await extractText(filePath);
+
+  tmpResponse = await summaryText(tmpResponse, context);
+
+  tmpResponse = await narrativeFromText(tmpResponse);
 
   fs.readFile(tmpResponse, "utf8", (err, data) => {
     if (err) {
@@ -52,26 +79,52 @@ app.post("/summary", upload.single("file"), async (req, res, next) => {
    });
 });
 
+app.post("/A", upload.single("file"), async (req, res, next) => {//A yerine narrative yazinca calismiyor amcik  !!!!!!!!!!!!!!!!!!
+  const filePath = req.file.path;
+  const context = req.body.context;
+  var tmpResponse = "";
 
-app.use((req, res, next) => {
-  // Eğer oturum yoksa, işlemi tamamlayın
-  if (!req.session) return next();
+  tmpResponse = await extractText(filePath);
 
-  // Oturum sona erdiğinde veya silindiğinde dosyayı sil
-  req.session.destroy((err) => {
-    if (err) return next(err);
+  tmpResponse = await summaryText(tmpResponse, context);
 
-    // Burada req.session'in null olmadığını varsayıyoruz
-    if (req.session.uploadedFile) {
-      const tmpResponse = path.join(__dirname, "temp", req.session.uploadedFile);
-      if (fs.existsSync(tmpResponse)) {
-        fs.unlinkSync(tmpResponse); // Dosyayı sil
-      }
+  tmpResponse = await narrativeFromText(tmpResponse);
+
+  fs.readFile(tmpResponse, "utf8", (err, data) => {
+    if (err) {
+      console.error("Dosya okuma hatası:", err);
+      return;
     }
 
-    next(); // İşlemi devam ettirin
-  });
+    res.json({
+      message: "File uploaded successfully",
+      fileName: req.session.uploadedFile,
+      response: data,// bu yapilarin formatini degistirmemeiz lazim
+     });
+   });
 });
+
+//BURA HEM CALISMIYOR HEM DE HATA VERIYOR
+
+// app.use((req, res, next) => {
+//   // Eğer oturum yoksa, işlemi tamamlayın
+//   if (!req.session) return next();
+
+//   // Oturum sona erdiğinde veya silindiğinde dosyayı sil
+//   req.session.destroy((err) => {
+//     if (err) return next(err);
+
+//     // Burada req.session'in null olmadığını varsayıyoruz
+//     if (req.session.uploadedFile) {
+//       const tmpResponse = path.join(__dirname, "temp", req.session.uploadedFile);
+//       if (fs.existsSync(tmpResponse)) {
+//         fs.unlinkSync(tmpResponse); // Dosyayı sil
+//       }
+//     }
+
+//     next(); // İşlemi devam ettirin
+//   });
+// });
 
 app.use("*", (req, res, next) => {
   res.status(404).json("Bulunamadı");
