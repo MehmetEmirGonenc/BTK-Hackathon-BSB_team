@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const { error } = require("console");
+const cors = require("cors");
 require("dotenv").config(); //??
 const fs = require("fs");
 
@@ -13,6 +14,11 @@ const path = require("path");
 
 const app = express();
 const PORT = 5000;
+
+app.use(cors({
+  origin: 'http://localhost:3000', // Allow only your React app to access this server
+  credentials: true // Allow credentials if needed
+}));
 
 var summaryPath = "";
 
