@@ -13,7 +13,7 @@ const HomePage = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [filePreview, setFilePreview] = useState('');
-  const [summaryText, setSummaryText] = useState('no spasifications');
+  const [summaryText, setSummaryText] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [dragActive, setDragActive] = useState(false);
   const [summaryResponse, setSummaryResponse] = useState('');
@@ -158,6 +158,7 @@ const HomePage = () => {
                 <input
                   type="text"
                   value={summaryText}
+                  placeholder='no specifications'
                   onChange={handleSummaryTextChange}
                 />
               </label>
