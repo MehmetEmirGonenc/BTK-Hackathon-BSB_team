@@ -127,7 +127,7 @@ const HomePage = () => {
               file.type.startsWith('image') ? (
                 <img src={filePreview} alt="Uploaded preview" />
               ) : file.type === 'application/pdf' ? (
-                <div style={{ height: '750px' }}>
+                <div >
                   <Worker workerUrl={`https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`}>
                     <Viewer fileUrl={filePreview} />
                   </Worker>
