@@ -190,7 +190,7 @@ const HomePage = () => {
         <div className='display-result'>
           {loading ? <Loading /> : 
           <ReactMarkdown>
-            {summaryResponse || "Please insert file to get summary"}
+            {summaryResponse || "Please insert file and hit upload to get summary or test"}
           </ReactMarkdown>
           }
         </div>
