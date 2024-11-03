@@ -11,7 +11,7 @@ const summaryText = async (filePath, context) => {
   try {
     const summaryScriptPath = path.join(__dirname, "./py-scripts/summary.py");
     const { stdout, stderr } = await execPromise(
-      `python3 ${summaryScriptPath} "${filePath}" "${context}"`
+      `python ${summaryScriptPath} "${filePath}" "${context}"`
     );
     return stdout.trim();
   } catch (e) {
@@ -24,7 +24,7 @@ const questFromText = async (filePath, context) => {
     try {
       const summaryScriptPath = path.join(__dirname, "./py-scripts/quest.py");
       const { stdout, stderr } = await execPromise(
-        `python3 ${summaryScriptPath} "${filePath}"`
+        `python ${summaryScriptPath} "${filePath}"`
       );
       return stdout.trim();
     } catch (e) {
@@ -37,7 +37,7 @@ const questFromText = async (filePath, context) => {
     try {
       const narrativeScriptPath = path.join(__dirname, "./py-scripts/narrative.py");
       const { stdout, stderr } = await execPromise(
-        `python3 ${narrativeScriptPath} "${filePath}"`
+        `python ${narrativeScriptPath} "${filePath}"`
       );
       return stdout.trim();
     } catch (e) {
@@ -50,7 +50,7 @@ const questFromText = async (filePath, context) => {
     try {
       const narrativeScriptPath = path.join(__dirname, "./py-scripts/text-to-speech.py");
       const { stdout, stderr } = await execPromise(
-        `python3 ${narrativeScriptPath} "${filePath}"`
+        `python ${narrativeScriptPath} "${filePath}"`
       );
       return stdout.trim();
     } catch (e) {

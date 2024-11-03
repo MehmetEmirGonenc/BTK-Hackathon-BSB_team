@@ -15,9 +15,9 @@ const extractText = async (filePath) => {
       "./py-scripts/extract-text.py"
     );
     const { stdout, stderr } = await execPromise(
-      `python3 ${extractScriptPath} "${filePath}"`
+      `python ${extractScriptPath} "${filePath}"`
     );
-    return stdout.trim(); //returns path of txt file which generated from pdf
+    return stdout.trim();
   } catch (e) {
     console.log("extractText");
     console.error(e);

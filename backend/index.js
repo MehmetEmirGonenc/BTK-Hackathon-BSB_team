@@ -20,7 +20,6 @@ app.use(cors({
   credentials: true 
 }));
 
-var summaryPath = "";
 
 app.use(
   session({
