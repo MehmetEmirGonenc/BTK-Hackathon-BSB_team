@@ -86,7 +86,7 @@ app.post("/test", upload.single("file"), async (req, res, next) => {
    });
 });
 
-app.post("/A", upload.single("file"), async (req, res, next) => {//A yerine narrative yazinca calismiyor amcik  !!!!!!!!!!!!!!!!!!
+app.post("/A", upload.single("file"), async (req, res, next) => {//A yerine narrative yazinca calismiyor
   const filePath = req.file.path;
   const context = req.body.context;
   var tmpResponse = "";

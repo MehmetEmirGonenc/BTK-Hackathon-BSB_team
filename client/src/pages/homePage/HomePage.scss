@@ -1,61 +1,81 @@
 .homepage {
-    text-align: center;
+  text-align: center;
 
-    .content {
-      margin-top: 4rem;
-      padding: 2rem;
-    }
-
-    .file-upload {
-      width: 100%;
-      margin: 2rem 0;
-
-      .dropzone {
-        width: 95%;
-        padding: 2rem;
-        border: 2px dashed #ccc;
-        border-radius: 10px;
-        text-align: center;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-
-        &.active {
-          background-color: #f0f8ff;
-          border-color: #007bff;
-        }
-
-        p {
-          color: #888;
-          margin: 0;
-        }
-
-        .file-input {
-           display: none;
-        }
-      }
-
-      label {
-        display: block;
-        margin-top: 1rem;
-        input{
-          padding: 5px;
-          margin-left: 10px;
-        }
-      }
-
-      button {
-        margin-top: 1rem;
-        padding: 0.5rem 1rem;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-
-        &:hover {
-          background-color: #0056b3;
-        }
-      }
-    }
-
+  .container {
+    display: flex;
+    flex-direction: row;
+    padding: 2rem;
   }
+
+  .file-upload {
+    width: 45%;
+    .dropzone {
+      width: 100%;
+      padding: 2rem;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &.active {
+        background-color: #f0f8ff;
+        border-color: #007bff;
+      }
+
+      p {
+        color: #888;
+        margin: 0;
+      }
+
+      .file-input {
+        display: none;
+      }
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      input {
+        padding: 5px;
+        margin-left: 10px;
+      }
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+
+  .file-preview {
+    width: 40%;
+    text-align: left;
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+  }
+}
