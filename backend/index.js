@@ -31,13 +31,20 @@ app.use(
 );
 
 app.post("/summary", upload.single("file"), async (req, res, next) => {
+
   const filePath = req.file.path;
   const context = req.body.context;
+
   var tmpResponse = "";
 
   tmpResponse = await extractText(filePath);
 
   tmpResponse = await summaryText(tmpResponse, context);
+
+  if (!tmpResponse) {
+    console.error("tmpResponse is undefined or empty");
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 
   summaryPath = tmpResponse;
   fs.readFile(tmpResponse, "utf8", (err, data) => {

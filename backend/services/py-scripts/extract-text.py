@@ -35,7 +35,7 @@ args = parser.parse_args()
 sourceFile = args.file_path
 out_path = sourceFile.split(".")
 file_type = out_path[-1]  # Identify the file type by its extension
-out_path[-1] = "txt"  # Set output file extension to JSON
+out_path[-1] = "txt"  # Set output file extension to .txt
 out_path = ".".join(out_path)  # Reconstruct the output file path
 
 text_output = ""  # Initialize the output text
@@ -43,13 +43,16 @@ text_output = ""  # Initialize the output text
 # Check the file type and call the appropriate function
 if file_type == "pdf":  
     text_output = extract_text_from_pdf(sourceFile)
+elif file_type == "pptx":
+    text_output = extract_text_from_pptx(sourceFile)
+else:
+    print(f"Unsupported file type: {file_type}")
+    exit(1)
 
-# Write the extracted text to a new TXT file
-with open(out_path, "w") as file:
+# Write the extracted text to a new TXT file with utf-8 encoding
+with open(out_path, "w", encoding="utf-8") as file:
     file.write(f"{sourceFile}\n")
     file.write(text_output)
 
-# Print the path of the output JSON file
+# Print the path of the output .txt file
 print(out_path)
-
-

@@ -1,5 +1,6 @@
 import argparse  # Library for parsing command-line arguments
 import google.generativeai as genai  # Import Google Generative AI library
+import os
 
 # Set up argument parser with a description for the script
 parser = argparse.ArgumentParser(description="Summarize the given text file")
@@ -25,7 +26,7 @@ with open(sourceFile, 'r', encoding='utf-8') as file:
     textDocument = file.read()
 
 # Configure the Generative AI model with the API key (Replace with env variable in production)
-genai.configure(api_key="AIzaSyDqC5cme1DLiVksst_l5KDWOJ8o842Gj_I")
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
 # Formulate the prompt for content generation

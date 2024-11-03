@@ -15,7 +15,7 @@ const extractText = async (filePath) => {
       "./py-scripts/extract-text.py"
     );
     const { stdout, stderr } = await execPromise(
-      `python3 ${extractScriptPath} "${filePath}"`
+      `python ${extractScriptPath} "${filePath}"`
     );
     return stdout.trim(); //returns path of txt file which generated from pdf
   } catch (e) {
@@ -24,20 +24,16 @@ const extractText = async (filePath) => {
   }
 };
 
-const readText = (filePath) => {
+const readText = async (filePath) => {
   try {
-    fs.readFile(filePath, "utf8", (err, data) => {
-      if (err) {
-        console.error("Dosya okuma hatası:", err);
-        return;
-      }
-      return data;
-    });
+    const data = await fs.promises.readFile(filePath, "utf8");
+    return data;
   } catch (e) {
-    console.log("readText");
-    console.error(e);
+    console.error("Error reading file:", e);
+    return null;
   }
 };
+
 
 module.exports = {
   extractText,
