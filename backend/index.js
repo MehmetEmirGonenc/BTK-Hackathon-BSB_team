@@ -36,9 +36,9 @@ app.use(
   })
 );
 
-app.post("/test", upload.single("file"), async (req, res, next) => {
+app.post("/summary", upload.single("file"), async (req, res, next) => {
   const filePath = req.file.path;
-  const context = req.body.context;
+  const context = req.body.context || "";
 
   try {
     // Attempt to extract text from the file
@@ -71,6 +71,15 @@ app.post("/test", upload.single("file"), async (req, res, next) => {
         fileName: req.session.uploadedFile,
         response: data,
       });
+
+      // fs.unlink(filePath, (err) => {
+      //   if (err) {
+      //     console.error(`Error deleting file: ${filePath}`, err);
+      //   } else {
+      //     console.log(`File deleted: ${filePath}`);
+      //   }
+      // });
+
     });
 
   } catch (error) {
@@ -80,9 +89,9 @@ app.post("/test", upload.single("file"), async (req, res, next) => {
 });
 
 
-app.post("/summary", upload.single("file"), async (req, res, next) => {
+app.post("/test", upload.single("file"), async (req, res, next) => {
   const filePath = req.file.path;
-  const context = req.body.context;
+  const context = req.body.context || "";
 
   try {
     // Attempt to extract text from the file
@@ -122,7 +131,15 @@ app.post("/summary", upload.single("file"), async (req, res, next) => {
         fileName: req.session.uploadedFile,
         response: data,
       });
+      // fs.unlink(filePath, (err) => {
+      //   if (err) {
+      //     console.error(`Error deleting file: ${filePath}`, err);
+      //   } else {
+      //     console.log(`File deleted: ${filePath}`);
+      //   }
+      // });
     });
+    
 
   } catch (error) {
     console.error("An error occurred:", error);

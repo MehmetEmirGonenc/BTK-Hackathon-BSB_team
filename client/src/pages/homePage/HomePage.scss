@@ -113,7 +113,31 @@
         overflow-y: auto;
       }
     }
+    .options {
+  display: flex;
+  gap: 10px;
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    background-color: #ccc;
+    color: #333;
+
+    &.selected {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    &.dimmed {
+      background-color: #7c7b7b;
+      color: #ffffff;
+    }
   }
+}
+}
   .display-result{
     width: 50%;
     padding: 20px;

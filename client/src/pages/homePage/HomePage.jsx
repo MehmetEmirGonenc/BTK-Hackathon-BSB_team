@@ -13,7 +13,7 @@ const HomePage = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [filePreview, setFilePreview] = useState('');
-  const [summaryText, setSummaryText] = useState('');
+  const [summaryText, setSummaryText] = useState('no spasifications');
   const [selectedOption, setSelectedOption] = useState('');
   const [dragActive, setDragActive] = useState(false);
   const [summaryResponse, setSummaryResponse] = useState('');
@@ -60,12 +60,19 @@ const HomePage = () => {
       setLoading(false);
       return;
     }
+    if(!selectedOption){
+      const errorMessage = "Please select option (test or summary)";
+      setError(errorMessage);
+      toast.error(error);
+      setLoading(false);
+      return;
+    }
     
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('context', summaryText);
 
     if (selectedOption === 'summary') {
-      formData.append('context', summaryText);
       try {
         const response = await fetch('http://localhost:5000/summary', {
           method: 'POST',
@@ -84,7 +91,6 @@ const HomePage = () => {
         setLoading(false);
       }
     } else if (selectedOption === 'test') {
-      formData.append('test', 'Test selected');
       try {
         const response = await fetch('http://localhost:5000/test', {
           method: 'POST',
@@ -130,15 +136,23 @@ const HomePage = () => {
             </div>
 
             <div className="options">
-              <button type="button" onClick={() => setSelectedOption('summary')}>
+              <button
+                type="button"
+                className={selectedOption === 'summary' ? 'selected' : 'dimmed'}
+                onClick={() => setSelectedOption('summary')}
+              >
                 Summary
               </button>
-              <button type="button" onClick={() => setSelectedOption('test')}>
+              <button
+                type="button"
+                className={selectedOption === 'test' ? 'selected' : 'dimmed'}
+                onClick={() => setSelectedOption('test')}
+              >
                 Test
               </button>
             </div>
 
-            {selectedOption === 'summary' && (
+            {selectedOption && (
               <label className="summary-text">
                 Please write if you want to any specifications:
                 <input
